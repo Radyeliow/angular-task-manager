@@ -1,0 +1,33 @@
+<div class="task-form-wrapper">
+  <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label dir="ltr" for="title">عنوان المهمة:</label>
+    <input type="text" id="title" formControlName="title">
+    @if (taskForm.get('title')?.invalid && taskForm.get('title')?.touched) {
+      @if (taskForm.get('title')?.hasError('required')) {
+        <p>Title is required.</p>
+      }
+      @if (taskForm.get('title')?.hasError('minlength')) {
+        <p>Title must be at least 3 characters long.</p>
+      }
+    }
+  </div>
+  <div>
+    <label dir="ltr" for="description">تفاصيل ووصف المهمة:</label>
+    <textarea id="description" formControlName="description"></textarea>
+    @if (taskForm.get('description')?.invalid && taskForm.get('description')?.touched) {
+      @if (taskForm.get('description')?.hasError('required')) {
+        <p>Description is required.</p>
+      }
+      @if (taskForm.get('description')?.hasError('minlength')) {
+        <p>Description must be at least 10 characters long.</p>
+      }
+    }
+  </div>
+  <div class="button-group">
+    <button type="submit" [disabled]="!taskForm.valid">Submit</button>
+    <button type="button" class="bg-secondary" routerLink="/">Cancel</button>
+  </div>
+</form>
+
+</div>

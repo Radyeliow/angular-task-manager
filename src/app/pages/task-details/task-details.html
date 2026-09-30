@@ -1,0 +1,63 @@
+<div class="details-page-wrapper">
+
+  <!-- الـ @if الشرطي الذي قمت بكتابته أنت بنجاح للتأكد من وجود البيانات -->
+  @if (task(); as currentTask) {
+
+    <div class="premium-details-card">
+
+      <!-- رأس الكارد: يحتوي على الرقم والشارة الملونة لحالة المهمة -->
+      <header class="card-header-section">
+        <span class="task-id-tag">معرّف المهمة #{{ currentTask.id }}</span>
+
+        @if (currentTask.completed) {
+          <span class="status-pill success">✓ مكتملة</span>
+        } @else {
+          <span class="status-pill pending">⏳ قيد التنفيذ</span>
+        }
+      </header>
+
+      <hr class="card-divider">
+
+      <!-- جسم الكارد: يعرض العنوان والوصف التفصيلي -->
+      <main class="card-body-section">
+        <h2 class="detail-title">📍 {{ currentTask.title }}</h2>
+
+        <div class="desc-container">
+          <h4>وصف النشاط والتفاصيل:</h4>
+          <p class="detail-desc">{{ currentTask.description }}</p>
+        </div>
+
+        <div class="meta-info">
+          <span class="date-text">📅 تـاريخ الإنـشاء: {{ currentTask.createdAt | date:'mediumDate' }}</span>
+        </div>
+
+      </main>
+
+      <footer class="card-footer-section">
+        <!-- زر العودة بالقوس المربع والـ routerLink الذكي بدون ريفريش -->
+        <button class="modern-back-btn" routerLink="/">
+          <span>→</span> العودة للقائمة الرئيسية
+        </button>
+
+        <button class="modern-toggle-btn" [class.is-done]="currentTask.completed" (click)="toggleSave()">
+              {{ currentTask.completed ? '↩️ إعادة كمعلقة' : '✅ تحديد كمكتملة' }}
+        </button>
+
+        <button class="modern-delete-btn" (click)="deletTask()">حذف</button>
+      </footer>
+
+    </div>
+
+  } @else {
+
+    <!-- واجهة الخطأ الأنيقة في حال كتابة رقم مسار غير مسجل -->
+    <div class="premium-error-card">
+      <div class="error-icon">⚠️</div>
+      <h3>عذراً، لم نتمكن من العثور على المهمة!</h3>
+      <p>الرقم المكتوب في شريط المتصفح قد يكون خاطئاً أو تم حذف هذه المهمة مسبقاً.</p>
+      <button class="modern-back-btn" routerLink="/">العودة للرئيسية</button>
+    </div>
+
+  }
+
+</div>

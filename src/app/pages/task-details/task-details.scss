@@ -1,0 +1,237 @@
+.details-page-wrapper {
+  max-width: 650px;
+  width: 100%;
+  margin: 40px auto;
+  padding: 0 15px;
+  direction: rtl; // ضبط اتجاه النصوص العربية من اليمين إلى اليسار
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+// 💎 تصميم كارد التفاصيل الفاخر
+.premium-details-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 35px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  transition: transform 0.3s ease;
+
+  .card-header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .task-id-tag {
+      font-size: 14px;
+      color: #94a3b8;
+      font-weight: 600;
+      background-color: #f1f5f9;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+  }
+}
+
+.card-divider {
+  border: none;
+  border-top: 1px solid #f1f5f9;
+  margin: 20px 0;
+}
+
+// تنسيق محتوى المهمة الداخلي
+.card-body-section {
+  .detail-title {
+    font-size: 24px;
+    color: #0f172a;
+    font-weight: 800;
+    margin: 0 0 20px 0;
+    line-height: 1.4;
+  }
+
+  // حاوية الوصف الناعمة المعزولة
+  .desc-container {
+    background-color: #f8fafc;
+    border: 1px solid #f1f5f9;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+
+    h4 {
+      margin: 0 0 10px 0;
+      color: #334155;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .detail-desc {
+      margin: 0;
+      color: #475569;
+      font-size: 15px;
+      line-height: 1.8;
+    }
+  }
+
+  .meta-info {
+    font-size: 13px;
+    color: #64748b;
+    font-weight: 500;
+  }
+}
+
+// أسفل الكارد وزر العودة المحترف
+.card-footer-section {
+  margin-top: 35px;
+  text-align: right;
+}
+
+.modern-back-btn {
+  background-color: #1e293b;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+
+  span {
+    transition: transform 0.2s ease;
+  }
+
+  &:hover {
+    background-color: #0f172a;
+    transform: translateX(-3px); // حركة ناعمة لليمين تعبر عن العودة باللغة العربية
+
+    span {
+      transform: translateX(-3px);
+    }
+  }
+}
+
+// شارات الحالة الدائرية الفاخرة
+.status-pill {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+
+  &.success {
+    background-color: #d1fae5;
+    color: #065f46;
+  }
+
+  &.pending {
+    background-color: #fef3c7;
+    color: #92400e;
+  }
+}
+
+// كارد عرض الخطأ الأنيق
+.premium-error-card {
+  text-align: center;
+  background-color: #fef2f2;
+  border: 1px solid #fee2e2;
+  padding: 40px;
+  border-radius: 16px;
+
+  .error-icon {
+    font-size: 45px;
+    margin-bottom: 15px;
+  }
+
+  h3 {
+    margin: 0 0 10px 0;
+    color: #991b1b;
+    font-size: 19px;
+  }
+
+  p {
+    margin: 0 0 25px 0;
+    color: #7f1d1d;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+}
+
+// 1. تحديث حاوية الأزرار السفلية لتجعل الأزرار تظهر بجانب بعضها بشكل متناسق
+.card-footer-section {
+  margin-top: 35px;
+  display: flex;
+  justify-content: space-between; // توزيع الأزرار بالتساوي (واحد يمين وواحد يسار)
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+// 2. 💎 تصميم زر الحذف الاحترافي والفاخر (Premium Crimson Delete Button)
+.modern-delete-btn {
+  background-color: #fff1f2; // خلفية حمراء ناعمة جداً وخفيفة في وضع الخمول لمنع تشتت العين
+  color: #e11d48; // لون النص أحمر داكن واضح
+  border: 1px solid #fecdd3;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 4px rgba(225, 29, 72, 0.02);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); // تأثير حركي مرن جداً
+
+  &:hover {
+    background-color: #e11d48; // يتحول بالكامل للون الأحمر الداكن المبهج عند تمرير الماوس
+    color: white; // يتحول النص للأبيض
+    border-color: #e11d48;
+    transform: translateY(-2px); // ارتفاع بسيط يعطي إيحاء بالقابلية للضغط
+    box-shadow: 0 6px 16px rgba(225, 29, 72, 0.25); // ظل أحمر ناعم وثلاثي الأبعاد
+  }
+
+  &:active {
+    transform: translateY(0); // انضغاط بسيط للزر لأسفل عند النقر الحقيقي يعطي شعوراً بالواقعية
+    box-shadow: 0 2px 4px rgba(225, 29, 72, 0.1);
+  }
+}
+
+
+// 💎 تصميم زر تغيير الحالة التفاعلي (Premium Toggle Button)
+.modern-toggle-btn {
+  background-color: #eff6ff; // خلفية زرقاء ناعمة وخفيفة في وضع المعلقة
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.25s ease;
+
+  &:hover {
+    background-color: #2563eb;
+    color: white;
+    border-color: #2563eb;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.2);
+  }
+
+  // 🟢 التنسيق عندما يتحول الكلاس ديناميكياً إلى مكتمل (is-done) ليصبح لونه أخضر
+  &.is-done {
+    background-color: #f0fdf4; // خلفية خضراء ناعمة جداً
+    color: #16a34a;
+    border-color: #bbf7d0;
+
+    &:hover {
+      background-color: #16a34a;
+      color: white;
+      border-color: #16a34a;
+      box-shadow: 0 6px 16px rgba(22, 163, 74, 0.2);
+    }
+  }
+}

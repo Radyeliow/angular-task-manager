@@ -1,0 +1,219 @@
+.tasks-container {
+  max-width: 1000px;
+  width: 100%;
+  margin: 0 auto;
+  direction: rtl; // جعل الترتيب يبدأ من اليمين لليسار للغة العربية
+
+  .page-title {
+    color: #2c3e50;
+    margin-bottom: 25px;
+    font-size: 24px;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 10px;
+  }
+}
+
+// شبكة الكروت (تظهر بجانب بعضها بشكل أفقي متناسق)
+.tasks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+// التنسيق الأساسي للكارت الواحد
+.task-card {
+  background-color: #ffffff;
+  border-radius: 10px;
+  border-right: 5px solid #e67e22; // 🟠 بوردر برتقالي افتراضي للمهام المعلقة
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .task-title {
+    margin: 0 0 10px 0;
+    font-size: 18px;
+    color: #2c3e50;
+  }
+
+  .task-desc {
+    margin: 0;
+    font-size: 14px;
+    color: #7f8c8d;
+    line-height: 1.6;
+  }
+
+  .card-footer {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  // 👈 التنسيق الذكي عندما يتحقق الشرط ويصبح الكارد مكتمل (Completed)
+  &.completed {
+    border-right-color: #2ecc71; // 🟢 يتحول البوردر للأخضر فوراً
+    background-color: #f8f9fa;
+    opacity: 0.85;
+
+    .task-title {
+      text-decoration: line-through; // إضافة خط شطب على العنوان دلالة الإنجاز
+      color: #95a5a6;
+    }
+  }
+}
+
+// تنسيق الشارات الصغيرة (Badges)
+.badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+
+  &.success {
+    background-color: #e8f8f5;
+    color: #2ecc71;
+  }
+
+  &.warning {
+    background-color: #fef5e7;
+    color: #e67e22;
+  }
+}
+
+// زر التفاصيل
+.details-btn {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background 0.2s;
+
+  &:hover {
+    background-color: #2980b9;
+  }
+}
+
+// رسالة السلة الفارغة
+.no-tasks {
+  text-align: center;
+  grid-column: 1 / -1;
+  padding: 40px;
+  color: #7f8c8d;
+  font-size: 16px;
+}
+
+.task-card {
+  cursor: pointer; // 👈 هذا السطر السحري يحول مؤشر الماوس لشكل يد عند الوقوف فوق الكارد
+
+  // بقية أكواد التنسيق الخاصة بك كما هي...
+}
+
+// حاوية أزرار الفلترة والتصفية (Modern Tabs Layout)
+.button-group-filters {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px; // مسافة ناعمة بين الأزرار الثلاثة
+  margin: 20px 0 30px 0;
+  padding: 6px;
+  background-color: #f1f5f9; // خلفية رمادية خفيفة تجمع الأزرار بداخلها كلوحة واحدة
+  border-radius: 10px;
+  max-width: fit-content; // تجعل الحاوية تأخذ مقاس الأزرار فقط ولا تفرش بعرض الشاشة
+
+  button {
+    border: none;
+    padding: 8px 20px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #475569; // لون نص هادئ للافتراضي
+    background-color: transparent; // خلفية شفافة لتبدو الأزرار ناعمة في وضع الخمول
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); // تأثير حركي مرن جداً عند الانتقال
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      color: #0f172a;
+      background-color: #e2e8f0; // رمادي أغمق قليلاً عند تمرير الماوس
+    }
+
+    // 💡 ملاحظة: بما أنك تتحكم في لون الخلفية ديناميكياً من الـ HTML [style.background-color]،
+    // فالـ SCSS هنا سيتكفل بضبط الحجم، الحواف، والخطوط والـ Hover لتبدو كأزرار متكاملة.
+  }
+}
+
+// زيادة جمالية وتناسق للكارت مع زر الحذف الجديد
+.task-card {
+  button {
+    font-family: system-ui, sans-serif;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+
+    &:hover {
+      background-color: #dc2626 !important; // يتحول لأحمر داكن عند الرغبة في الحذف
+      transform: scale(1.02); // تكبير غير ملحوظ يعطي إيحاء تفاعلي
+    }
+
+    &:active {
+      transform: scale(0.98); // انضغاط بسيط للزر عند النقر الحقيقي
+    }
+  }
+}
+
+
+// 💎 تنسيق حاوية شريط الإنجاز (Premium Progress Bar)
+.progress-section {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 25px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-weight: 700;
+    font-size: 15px;
+    color: #334155;
+
+    .percentage-text {
+      color: #10b981; // تلوين النسبة باللون الأخضر المبهج
+      font-size: 17px;
+    }
+  }
+
+  // الخلفية الرمادية للشريط
+  .progress-bar-bg {
+    width: 100%;
+    height: 10px;
+    background-color: #f1f5f9;
+    border-radius: 20px;
+    overflow: hidden; // لضمان عدم خروج اللون الأخضر عن الحواف المستديرة
+  }
+
+  // 🟢 الشريط الملون التفاعلي الممتد
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #10b981, #34d399); // تدرج أخضر رائع للإنجاز
+    border-radius: 20px;
+    // 👈 السطر السحري المسؤول عن جعل الحشو يمتد بنعومة بالغة عند التغيير بدل الانتقال المفاجئ
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+
