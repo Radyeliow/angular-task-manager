@@ -1,44 +1,61 @@
-<div class="tasks-container">
-  
+<div class="max-w-5xl w-full mx-auto p-4" dir="rtl">
 
-  <div class="progress-section">
 
-    <div class="progress-info">
+  <div class="bg-white border border-gray-200 rounded-2xl p-5 mb-6 shadow-sm">
+
+    <div class="flex justify-between items-center mb-3 font-bold text-slate-700 text-sm md:text-base">
       <span>نسبة إنجاز مهامك اليوم 🎯</span>
-      <span class="percentage-text">{{progressPercentage()}}%</span>
+      <span class="text-emerald-500 text-lg">{{progressPercentage()}}%</span>
     </div>
-    <div class="progress-bar-bg">
-      <div class="progress-bar-fill" [style.width.%]="progressPercentage()"></div>
+    <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
+      <div class="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full transition-all duration-500 ease-out"
+       [style.width.%]="progressPercentage()"></div>
     </div>
   </div>
 
-  <h2 class="page-title">قائمة المهام اليومية 📋</h2>
-  <div class="button-group-filters" style="margin-bottom: 20px; display: flex; gap: 10px;">
-    <button (click)="getTask('all')" [style.background-color]="filter() === 'all' ? '#3b82f6' : '#e2e8f0'">الكل</button>
-    <button (click)="getTask('completed')" [style.background-color]="filter() === 'completed' ? '#10b981' : '#e2e8f0'">المكتملة</button>
-    <button (click)="getTask('active')" [style.background-color]="filter() === 'active' ? '#f59e0b' : '#e2e8f0'">النشطة</button>
+  <h2 class="text-2xl font-extrabold text-slate-800 mb-6 pb-2 border-b-2 border-blue-500"
+  text-2xl font-extrabold text-slate-800 mb-6 pb-2 border-b-2 border-blue-500>قائمة المهام اليومية 📋</h2>
+  <div class="flex items-center gap-3 mb-8 p-1.5 bg-slate-100 rounded-xl max-w-max"
+   style="margin-bottom: 20px; display: flex; gap: 10px;">
+    <button (click)="getTask('all')"
+            [class]="filter() === 'all' ? 'bg-blue-600 text-white shadow-sm'
+            : 'text-slate-600 hover:bg-slate-200'"
+            class="px-5 py-2 text-sm font-bold rounded-lg transition-all duration-200">الكل</button>
+    <button (click)="getTask('completed')"
+            [class]="filter() === 'completed' ? 'bg-emerald-500 text-white shadow-sm' : 'text-slate-600 hover:bg-slate-200'"
+            class="px-5 py-2 text-sm font-bold rounded-lg transition-all duration-200">المكتملة</button>
+    <button (click)="getTask('active')"
+            [class]="filter() === 'active' ? 'bg-amber-500 text-white shadow-sm' : 'text-slate-600 hover:bg-slate-200'"
+            class="px-5 py-2 text-sm font-bold rounded-lg transition-all duration-200">النشطة</button>
   </div>
 
-  <div class="tasks-grid">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
     <!-- 👈 الـ Loop الذكي لتكرار المهام السبعة بناءً على الـ id -->
      @if (!filtertasks()) {
       <span class="no-tasks">لا توجد أي مهام حالياً، اضغط على إضافة مهمة لبدء يومك! 🥳</span>
      }
     @for (task of filtertasks(); track task.id) {
       <!-- الكارد يكتسب كلاس completed ديناميكياً إذا كانت المهمة مكتملة -->
-      <div class="task-card" [class.completed]="task.completed" [routerLink]="['/task', task.id]">
-        <div class="card-body">
-          <h3 class="task-title">{{ task.title }}</h3>
-          <p class="task-desc">{{ task.description }}</p>
-          <button (click)="deleteTask(task.id); $event.stopPropagation()">حذف</button>
+      <div [class]="task.completed ? 'border-t-emerald-500 bg-slate-50' :
+           'border-t-amber-500 bg-white'"
+           [routerLink]="['/task', task.id]"
+           class="border border-slate-200 border-t-4 rounded-2xl p-6 flex flex-col
+            justify-between cursor-pointer
+            shadow-sm hover:-translate-y-1.5 hover:shadow-md transition-all duration-300">
+        <div class="flex-grow">
+          <h3 [class.line-through]="task.completed" [class.text-slate-400]="task.completed"
+              class="text-lg font-bold text-slate-800 mb-2 transition-all duration-300">{{ task.title }}</h3>
+          <p class="text-sm text-slate-600 leading-relaxed">{{ task.description }}</p>
+          <button (click)="deleteTask(task.id); $event.stopPropagation()"
+                  class="mt-4 px-3 py-1.5 bg-rose-50 text-rose-600 text-xs font-bold rounded-md
+                  border border-rose-100 hover:bg-rose-600 hover:text-white transition-all duration-200">حذف</button>
         </div>
 
-        <div class="card-footer">
-          <!-- شارة حالة المهمة -->
+        <div class="mt-5 pt-3 border-t border-dashed border-slate-100 flex justify-between items-center">
           @if (task.completed) {
-            <span class="badge success">مكتملة ✓</span>
+            <span class="px-3 py-1 bg-emerald-50 text-emerald-600 text-xs font-bold rounded-full">مكتملة ✓</span>
           } @else {
-            <span class="badge warning">معلقة ⏳</span>
+            <span class="px-3 py-1 bg-amber-50 text-amber-600 text-xs font-bold rounded-full">معلقة ⏳</span>
           }
 
 

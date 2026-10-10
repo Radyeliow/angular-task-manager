@@ -10,9 +10,13 @@
         <span class="task-id-tag">معرّف المهمة #{{ currentTask.id }}</span>
 
         @if (currentTask.completed) {
-          <span class="status-pill success">✓ مكتملة</span>
+          <span class="status-pill success">
+            <ng-icon name="heroCheckCircle" class="text-sm ml-1"></ng-icon>
+            مكتملة</span>
         } @else {
-          <span class="status-pill pending">⏳ قيد التنفيذ</span>
+          <span class="status-pill pending">
+            <ng-icon name="heroClock" class="text-sm ml-1"></ng-icon>
+            قيد التنفيذ</span>
         }
       </header>
 
@@ -43,7 +47,10 @@
               {{ currentTask.completed ? '↩️ إعادة كمعلقة' : '✅ تحديد كمكتملة' }}
         </button>
 
-        <button class="modern-delete-btn" (click)="deletTask()">حذف</button>
+        <button class="modern-delete-btn"  (click)="deletTask()" >
+          <ng-icon name="heroTrash" class="text-lg"></ng-icon>
+          حذف
+          </button>
       </footer>
 
     </div>

@@ -2,12 +2,15 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TaskServices } from '../../services/task-services';
 import { Router, RouterLink } from '@angular/router';
+import { NgIconComponent, provideIcons } from '@ng-icons/core';
+import { heroPlusCircle, heroXCircle, heroDocumentPlus, heroExclamationCircle } from '@ng-icons/heroicons/outline';
 
 @Component({
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, NgIconComponent],
   selector: 'app-task-form',
   styleUrl: './task-form.scss',
   templateUrl: './task-form.html',
+  providers: [provideIcons({ heroPlusCircle, heroXCircle, heroDocumentPlus, heroExclamationCircle })]
 })
 export class TaskForm {
   private fb = inject(FormBuilder);

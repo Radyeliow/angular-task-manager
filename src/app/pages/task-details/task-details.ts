@@ -1,13 +1,16 @@
-import { Component, inject,signal,computed } from '@angular/core';
+import { Component, inject, signal, computed } from '@angular/core';
+import { NgIconComponent, provideIcons } from '@ng-icons/core';
+import { heroTrash, heroCheckCircle, heroClock } from '@ng-icons/heroicons/outline';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { taskItem, TaskServices } from '../../services/task-services';
 import { DatePipe } from '@angular/common';
 
 @Component({
-  imports: [DatePipe,RouterLink],
+  imports: [DatePipe,RouterLink,NgIconComponent],
   selector: 'app-task-details',
   styleUrl: './task-details.scss',
   templateUrl: './task-details.html',
+  providers: [provideIcons({ heroTrash, heroCheckCircle, heroClock })]
 })
 export class TaskDetails {
 
