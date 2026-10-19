@@ -1,126 +1,125 @@
-import { Injectable, signal,computed } from '@angular/core';
+import { Injectable, signal, computed, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
-
-
-export interface taskItem{
+export interface taskItem {
   id: number;
   title: string;
   description: string;
   completed: boolean;
   createdAt: Date;
 }
-@Injectable(
-  {
-    providedIn: 'root'
-  }
-)
+
+@Injectable({
+  providedIn: 'root'
+})
 export class TaskServices {
-  private taskList=signal<taskItem[]>([
-    {
-      id: 1 ,
-      title: 'تأسيس مشروع أنغولار النظيف',
-      description: 'إنشاء مجلدات المشروع وضبط ملف المسارات app.routes.ts بالـ Lazy Loading.',
-      completed: true,
-      createdAt: new Date()
-    },
-    {
-      id: 2,
-      title: 'بناء المحرك المركزي للبيانات TaskService',
-      description: 'كتابة دوال الإضافة والحذف وتعديل حالة المهمة باستخدام الـ Signals.',
-      completed: true,
-      createdAt: new Date()
-    },
-    {
-      id: 3,
-      title: 'تصميم واجهة عرض المهام TaskList',
-      description: 'عمل تكرار لبطاقات المهام باستخدام الـ loop الحديث @for وتلوين الحدود حسب الحالة.',
-      completed: false,
-      createdAt: new Date()
-    },
-    {
-      id: 4,
-      title: 'برمجة استمارة الإضافة بـ Reactive Forms',
-      description: 'ربط حقول الإدخال عبر الـ FormBuilder وإضافة شروط التحقق Validators لحماية المدخلات.',
-      completed: false,
-      createdAt: new Date()
-    },
-    {
-      id: 5,
-      title: 'إضافة ميزة الحفظ التلقائي في المتصفح LocalStorage',
-      description: 'تطوير الخدمة لتقوم بحفظ واسترجاع المهام تلقائياً لمنع ضياع البيانات عند تحديث الصفحة.',
-      completed: false,
-      createdAt: new Date()
-    },
-    {
-      id: 6,
-      title: 'بناء صفحة تفاصيل المهمة الديناميكية',
-      description: 'قراءة الـ id المتغير من الرابط باستخدام ActivatedRoute وعرض تفاصيل المهمة المستهدفة.',
-      completed: false,
-      createdAt: new Date()
-    },
-    {
-      id: 7,
-      title: 'مراجعة المشروع ورفعه على الـ Portfolio',
-      description: 'تنظيف كود الأكواد البرمجية والتأكد من مطابقتها للـ Clean Code ورفع التطبيق على GitHub.',
-      completed: false,
-      createdAt: new Date()
-    }
-  ]);
 
-  constructor(){
+  private http = inject(HttpClient);
+  private apiUrl = 'https://jsonplaceholder.typicode.com/todos';
+
+  // يبدأ السجنال فارغاً تماماً وينتظر تحديد مصدر البيانات الأصح
+  private taskList = signal<taskItem[]>([]);
+
+constructor() {
+   // 👈 جلب البيانات فوراً عند إنشاء الخدمة
+   const savedData = localStorage.getItem('saveTasks');
+    if (savedData) {
+      const parsedTasks: taskItem[] = JSON.parse(savedData);
+      if (parsedTasks && parsedTasks.length > 0) {
+        this.taskList.set(parsedTasks);
+         // نعم عثرنا على بيانات مخزنة ومعدلة
+      }
+    }
+}
+
+  // دالة قراءة مستقلة ونظيفة
+/*
+private readFromLocalStorage(): boolean {
     const savedData = localStorage.getItem('saveTasks');
-    if(savedData){
-      const parsedTasks : taskItem[] = JSON.parse(savedData);
-      this.taskList.set(parsedTasks);
+    if (savedData) {
+      const parsedTasks: taskItem[] = JSON.parse(savedData);
+      if (parsedTasks && parsedTasks.length > 0) {
+        this.taskList.set(parsedTasks);
+        return true; // نعم عثرنا على بيانات مخزنة ومعدلة
+      }
     }
+    return false; // الذاكرة فارغة تماماً
+  }
+*/
+
+  // دالة الـ GET جلب البيانات من الإنترنت
+  loadTasksFromServer() {
+    // 👈 التحقق الصارم: لو نجحت القراءة المحلية ووجدنا بيانات معدلة، اقفل بوابات الإنترنت فوراً لمنع الارتداد!
+
+
+    // إذا كانت هذه أول مرة يفتح فيها المستخدم الموقع والذاكرة فارغة، اذهب واجلب الـ 5 كروت
+    this.http.get<taskItem[]>(`${this.apiUrl}?_limit=5`).subscribe({
+      next: (data) => {
+        const readyTasks = data.map(task => ({
+          id: task.id,
+          title: task.title,
+          description: 'هذه المهمة تم سحبها حية وديناميكياً عبر شبكة الإنترنت من سيرفر خارجي! 🌐',
+          completed: task.completed,
+          createdAt: new Date()
+        }));
+        this.taskList.set(readyTasks);
+        this.saveTasksLocal();     // حفظهم فوراً في المتصفح ليكونوا خط الدفاع القادم
+      },
+      error: (err) => console.error('❌ خطأ شبكة خارجي في الـ GET:', err)
+    });
+     // حفظهم فوراً في المتصفح ليكونوا خط الدفاع القادم
   }
 
+  // دالة الـ POST لإرسال مهمة جديدة أونلاين
+  createNewTaskOnServer(title: string, description: string) {
+    const rawPayload = {
+      title: title,
+      completed: false,
+      userId: 1
+    };
 
-  tasks=this.taskList.asReadonly();
+    this.http.post<taskItem>(this.apiUrl, rawPayload).subscribe({
+      next: (savedResponse) => {
+        console.log('✨ تم حفظ المهمة على السيرفر أونلاين بنجاح:', savedResponse);
 
-  completedtasks = computed(
-    () => this.taskList().filter((task)=>task.completed)
-  )
+        const validatedTask: taskItem = {
+          id:  Date.now(),
+          title: savedResponse.title,
+          description: description, // قراءة النص المحلي للاستمارة لملء الكارت
+          completed: savedResponse.completed,
+          createdAt: new Date()
+        };
 
-  activetasks = computed(
-    () => this.taskList().filter((task)=>!task.completed)
-  )
-
-  deleteTask(id:number){
-    this.taskList.update((tasks)=>{
-      return tasks.filter((task)=> task.id !== id);
-    })
-
-    this.saveTasksLocal();
+        // إدراج الكارت الجديد في أول اللوحة وتحديث الذاكرة
+        this.taskList.update(tasks => [...tasks,validatedTask]);
+         this.saveTasksLocal();
+      },
+      error: (err) => console.error('❌ فشل إرسال وحفظ المهمة عبر الـ POST:', err)
+    });
+    // حفظهم فوراً في المتصفح ليكونوا خط الدفاع القادم
   }
 
+  completedtasks = computed(() => this.taskList().filter(task => task.completed));
+  activetasks = computed(() => this.taskList().filter(task => !task.completed));
 
-  addTask(title:string , description:string){
-    const newTask:taskItem = {
-      id:  Date.now(),
-      title : title,
-      description : description,
-      completed : false,
-      createdAt : new Date()
-    }
-    this.taskList.update((tasks)=>[...tasks,newTask])
-    this.saveTasksLocal();
+  // دالة الحذف المحدثة
+  deleteTask(id: number) {
+    this.taskList.update(tasks => tasks.filter(task => task.id != id));
+    this.saveTasksLocal(); // تحديث المتصفح فوراً ليمسح العنصر من الذاكرة
   }
 
-  saveTasksLocal(){
-    localStorage.setItem('saveTasks',JSON.stringify(this.taskList()));
-  }
-
+  // دالة تبديل الحالة المحدثة
   toggleTaskStatus(id: number) {
-    this.taskList.update((tasks) =>
-      // نستخدم .map للمرور على كل المهام، وتعديل المهمة التي تطابق الـ id فقط
-      tasks.map((task) =>
-        task.id === id ? { ...task, completed: !task.completed } : task
-      )
+    this.taskList.update(tasks =>
+      tasks.map(task => task.id == id ? { ...task, completed: !task.completed } : task)
     );
-
-    // 👈 استدعاء دالتك العبقرية لحفظ التعديل الجديد فوراً في ذاكرة المتصفح
-    this.saveTasksLocal();
+    this.saveTasksLocal(); // تحديث المتصفح فوراً لحفظ الشطب واللون الأخضر
   }
+
+  private saveTasksLocal() {
+    localStorage.setItem('saveTasks', JSON.stringify(this.taskList()));
+  }
+
+  tasks = this.taskList.asReadonly();
 
 }

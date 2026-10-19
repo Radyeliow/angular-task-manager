@@ -26,7 +26,7 @@ export class TaskForm {
   onSubmit(){
     if(this.taskForm.valid){
       console.log("Form Submitted", this.taskForm.value);
-      this.taskService.addTask(this.taskForm.value.title!, this.taskForm.value.description!);
+      this.taskService.createNewTaskOnServer(this.taskForm.value.title!, this.taskForm.value.description!);
       this.router.navigate(['/']);
     }
   }
